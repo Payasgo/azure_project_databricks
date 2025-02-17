@@ -1,0 +1,9 @@
+{
+	"name": "pmfconfiguration",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "5e3a30dd-d3fb-4840-80a3-1996ded53f12",
+		"tenantId": "470529a5-ccb7-4ea0-ba09-4d69a9aa3e83"
+	}
+}
