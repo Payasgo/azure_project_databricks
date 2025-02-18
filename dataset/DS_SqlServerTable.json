@@ -3,7 +3,10 @@
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "LS_SqlServer",
-			"type": "LinkedServiceReference"
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"database": "wifi"
+			}
 		},
 		"annotations": [],
 		"type": "SqlServerTable",
