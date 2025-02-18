@@ -18,7 +18,7 @@
 		"LS_SqlServer_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'LS_SqlServer'",
-			"defaultValue": "Integrated Security=False;Data Source=RTL-SDR;Initial Catalog=AzurePipelineManagement;User ID=kranthi"
+			"defaultValue": "Integrated Security=False;Data Source=RTL-SDR;Initial Catalog=@{linkedService().database};User ID=kranthi"
 		},
 		"LS_AzureDataLakeStorage_properties_typeProperties_url": {
 			"type": "string",

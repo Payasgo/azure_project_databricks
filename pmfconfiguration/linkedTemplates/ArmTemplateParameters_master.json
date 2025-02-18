@@ -12,7 +12,7 @@
 			"value": ""
 		},
 		"LS_SqlServer_connectionString": {
-			"value": "Integrated Security=False;Data Source=RTL-SDR;Initial Catalog=AzurePipelineManagement;User ID=kranthi"
+			"value": "Integrated Security=False;Data Source=RTL-SDR;Initial Catalog=@{linkedService().database};User ID=kranthi"
 		},
 		"LS_AzureDataLakeStorage_properties_typeProperties_url": {
 			"value": "https://dataingestpipdata.dfs.core.windows.net/"
