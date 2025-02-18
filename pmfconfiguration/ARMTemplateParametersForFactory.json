@@ -5,9 +5,6 @@
 		"factoryName": {
 			"value": "pmfconfiguration"
 		},
-		"LS_AzureBlobStorage_connectionString": {
-			"value": ""
-		},
 		"LS_AzureDataLakeStorage_accountKey": {
 			"value": ""
 		},
