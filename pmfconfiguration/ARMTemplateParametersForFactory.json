@@ -5,11 +5,14 @@
 		"factoryName": {
 			"value": "pmfconfiguration"
 		},
+		"LS_AzureBlobStorage_connectionString": {
+			"value": ""
+		},
 		"LS_AzureDataLakeStorage_accountKey": {
 			"value": ""
 		},
 		"LS_SqlServer_connectionString": {
-			"value": "Integrated Security=False;Data Source=RTL-SDR;Initial Catalog=wifi;User ID=kranthi"
+			"value": "Integrated Security=False;Data Source=RTL-SDR;Initial Catalog=AzurePipelineManagement;User ID=kranthi"
 		},
 		"LS_AzureDataLakeStorage_properties_typeProperties_url": {
 			"value": "https://dataingestpipdata.dfs.core.windows.net/"

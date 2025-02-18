@@ -7,6 +7,10 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "pmfconfiguration"
 		},
+		"LS_AzureBlobStorage_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'LS_AzureBlobStorage'"
+		},
 		"LS_AzureDataLakeStorage_accountKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'LS_AzureDataLakeStorage'"
@@ -14,7 +18,7 @@
 		"LS_SqlServer_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'LS_SqlServer'",
-			"defaultValue": "Integrated Security=False;Data Source=RTL-SDR;Initial Catalog=wifi;User ID=kranthi"
+			"defaultValue": "Integrated Security=False;Data Source=RTL-SDR;Initial Catalog=AzurePipelineManagement;User ID=kranthi"
 		},
 		"LS_AzureDataLakeStorage_properties_typeProperties_url": {
 			"type": "string",
@@ -50,6 +54,9 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"LS_AzureBlobStorage_connectionString": {
+						"value": "[parameters('LS_AzureBlobStorage_connectionString')]"
 					},
 					"LS_AzureDataLakeStorage_accountKey": {
 						"value": "[parameters('LS_AzureDataLakeStorage_accountKey')]"
