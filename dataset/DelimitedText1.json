@@ -1,0 +1,51 @@
+{
+	"name": "DelimitedText1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureDataLakeStorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileSystem": "raw"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "BSSID",
+				"type": "String"
+			},
+			{
+				"name": "Ch",
+				"type": "String"
+			},
+			{
+				"name": "dBm",
+				"type": "String"
+			},
+			{
+				"name": "WPS",
+				"type": "String"
+			},
+			{
+				"name": "Lck",
+				"type": "String"
+			},
+			{
+				"name": "Vendor",
+				"type": "String"
+			},
+			{
+				"name": "ESSID",
+				"type": "String"
+			}
+		]
+	}
+}
