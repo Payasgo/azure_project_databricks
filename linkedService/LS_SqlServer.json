@@ -4,7 +4,7 @@
 		"annotations": [],
 		"type": "SqlServer",
 		"typeProperties": {
-			"connectionString": "Integrated Security=False;Data Source=RTL-SDR;Initial Catalog=AzurePipelineManagement;User ID=kranthi",
+			"connectionString": "Integrated Security=False;Data Source=RTL-SDR;Initial Catalog=wifi;User ID=kranthi",
 			"password": {
 				"type": "AzureKeyVaultSecret",
 				"store": {
