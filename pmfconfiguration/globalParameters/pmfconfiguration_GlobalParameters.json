@@ -1,1 +1,6 @@
-{}
+{
+	"relativeurl": {
+		"type": "string",
+		"value": "/speakers"
+	}
+}
