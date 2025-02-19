@@ -16,6 +16,10 @@
 			"metadata": "Secure string for 'connectionString' of 'LS_SqlServer'",
 			"defaultValue": "Integrated Security=False;Data Source=RTL-SDR;Initial Catalog=@{linkedService().database};User ID=kranthi"
 		},
+		"ls_AmazonS31_secretAccessKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'secretAccessKey' of 'ls_AmazonS31'"
+		},
 		"ls_FileServer_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'ls_FileServer'"
@@ -31,6 +35,10 @@
 		"Ls_RestService_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://bigconference.azurewebsites.net/"
+		},
+		"ls_AmazonS31_properties_typeProperties_accessKeyId": {
+			"type": "string",
+			"defaultValue": "AKIA4ZPZVBVPGOAHGWQV"
 		},
 		"ls_FileServer_properties_typeProperties_host": {
 			"type": "string",
@@ -70,6 +78,9 @@
 					"LS_AzureDataLakeStorage_accountKey": {
 						"value": "[parameters('LS_AzureDataLakeStorage_accountKey')]"
 					},
+					"ls_AmazonS31_secretAccessKey": {
+						"value": "[parameters('ls_AmazonS31_secretAccessKey')]"
+					},
 					"LS_SqlServer_connectionString": {
 						"value": "[parameters('LS_SqlServer_connectionString')]"
 					},
@@ -84,6 +95,9 @@
 					},
 					"Ls_RestService_properties_typeProperties_url": {
 						"value": "[parameters('Ls_RestService_properties_typeProperties_url')]"
+					},
+					"ls_AmazonS31_properties_typeProperties_accessKeyId": {
+						"value": "[parameters('ls_AmazonS31_properties_typeProperties_accessKeyId')]"
 					},
 					"ls_FileServer_properties_typeProperties_host": {
 						"value": "[parameters('ls_FileServer_properties_typeProperties_host')]"

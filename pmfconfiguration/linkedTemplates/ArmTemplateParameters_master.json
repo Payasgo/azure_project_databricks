@@ -11,6 +11,9 @@
 		"LS_SqlServer_connectionString": {
 			"value": "Integrated Security=False;Data Source=RTL-SDR;Initial Catalog=@{linkedService().database};User ID=kranthi"
 		},
+		"ls_AmazonS31_secretAccessKey": {
+			"value": ""
+		},
 		"ls_FileServer_password": {
 			"value": ""
 		},
@@ -22,6 +25,9 @@
 		},
 		"Ls_RestService_properties_typeProperties_url": {
 			"value": "https://bigconference.azurewebsites.net/"
+		},
+		"ls_AmazonS31_properties_typeProperties_accessKeyId": {
+			"value": "AKIA4ZPZVBVPGOAHGWQV"
 		},
 		"ls_FileServer_properties_typeProperties_host": {
 			"value": "C:\\tempex"
