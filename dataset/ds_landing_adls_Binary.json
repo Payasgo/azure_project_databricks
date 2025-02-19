@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"folderPath": "s3",
+				"folderPath": "awss3",
 				"fileSystem": "landing_raw"
 			}
 		}
