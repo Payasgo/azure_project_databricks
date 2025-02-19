@@ -103,35 +103,11 @@
 						}
 					},
 					{
-						"name": "Set variable",
-						"type": "SetVariable",
-						"dependsOn": [
-							{
-								"activity": "filecheck",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "rowcount",
-							"value": {
-								"value": "@if(empty(activity('filecheck').output.firstRow), 0, 1)\n\n",
-								"type": "Expression"
-							}
-						}
-					},
-					{
 						"name": "Copy data",
 						"type": "Copy",
 						"dependsOn": [
 							{
-								"activity": "Set variable",
+								"activity": "filecheck",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -193,7 +169,7 @@
 						"type": "SqlServerStoredProcedure",
 						"dependsOn": [
 							{
-								"activity": "Copy data",
+								"activity": "set_adls_s3",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -236,10 +212,7 @@
 									"type": "Int32"
 								},
 								"record_count": {
-									"value": {
-										"value": "@variables('rowcount')",
-										"type": "Expression"
-									},
+									"value": "@variables('rowcount')",
 									"type": "Int32"
 								},
 								"success": {
@@ -253,6 +226,30 @@
 							"type": "LinkedServiceReference",
 							"parameters": {
 								"database": "AzurePipelineManagement"
+							}
+						}
+					},
+					{
+						"name": "set_adls_s3",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Copy data",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "rowcount",
+							"value": {
+								"value": "@activity('Copy data').output.rowsCopied",
+								"type": "Expression"
 							}
 						}
 					}
