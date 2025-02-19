@@ -1,0 +1,20 @@
+{
+	"name": "ds_s3_Parquet",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_AmazonS31",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AmazonS3Location",
+				"bucketName": "parquetdataset123",
+				"fileName": "userdata.parquet"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	}
+}
