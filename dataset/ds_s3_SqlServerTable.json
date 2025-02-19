@@ -1,0 +1,19 @@
+{
+	"name": "ds_s3_SqlServerTable",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_SqlServer",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"database": "AzurePipelineManagement"
+			}
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "userparquetsample"
+		}
+	}
+}
