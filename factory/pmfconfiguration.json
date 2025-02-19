@@ -1,5 +1,13 @@
 {
 	"name": "pmfconfiguration",
+	"properties": {
+		"globalParameters": {
+			"relativeurl": {
+				"type": "string",
+				"value": "/speakers"
+			}
+		}
+	},
 	"location": "eastus",
 	"identity": {
 		"type": "SystemAssigned",
