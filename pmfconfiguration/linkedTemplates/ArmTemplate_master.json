@@ -16,6 +16,10 @@
 			"metadata": "Secure string for 'connectionString' of 'LS_SqlServer'",
 			"defaultValue": "Integrated Security=False;Data Source=RTL-SDR;Initial Catalog=@{linkedService().database};User ID=kranthi"
 		},
+		"ls_FileServer_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'ls_FileServer'"
+		},
 		"LS_AzureDataLakeStorage_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://dataingestpipdata.dfs.core.windows.net/"
@@ -27,6 +31,14 @@
 		"Ls_RestService_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://bigconference.azurewebsites.net/"
+		},
+		"ls_FileServer_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "C:\\tempex"
+		},
+		"ls_FileServer_properties_typeProperties_userId": {
+			"type": "string",
+			"defaultValue": "RTL_SDR"
 		},
 		"containerUri": {
 			"type": "string",
@@ -61,6 +73,9 @@
 					"LS_SqlServer_connectionString": {
 						"value": "[parameters('LS_SqlServer_connectionString')]"
 					},
+					"ls_FileServer_password": {
+						"value": "[parameters('ls_FileServer_password')]"
+					},
 					"LS_AzureDataLakeStorage_properties_typeProperties_url": {
 						"value": "[parameters('LS_AzureDataLakeStorage_properties_typeProperties_url')]"
 					},
@@ -69,6 +84,12 @@
 					},
 					"Ls_RestService_properties_typeProperties_url": {
 						"value": "[parameters('Ls_RestService_properties_typeProperties_url')]"
+					},
+					"ls_FileServer_properties_typeProperties_host": {
+						"value": "[parameters('ls_FileServer_properties_typeProperties_host')]"
+					},
+					"ls_FileServer_properties_typeProperties_userId": {
+						"value": "[parameters('ls_FileServer_properties_typeProperties_userId')]"
 					}
 				}
 			},

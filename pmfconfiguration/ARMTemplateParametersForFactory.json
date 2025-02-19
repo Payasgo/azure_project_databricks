@@ -11,6 +11,9 @@
 		"LS_SqlServer_connectionString": {
 			"value": "Integrated Security=False;Data Source=RTL-SDR;Initial Catalog=@{linkedService().database};User ID=kranthi"
 		},
+		"ls_FileServer_password": {
+			"value": ""
+		},
 		"LS_AzureDataLakeStorage_properties_typeProperties_url": {
 			"value": "https://dataingestpipdata.dfs.core.windows.net/"
 		},
@@ -19,6 +22,12 @@
 		},
 		"Ls_RestService_properties_typeProperties_url": {
 			"value": "https://bigconference.azurewebsites.net/"
+		},
+		"ls_FileServer_properties_typeProperties_host": {
+			"value": "C:\\tempex"
+		},
+		"ls_FileServer_properties_typeProperties_userId": {
+			"value": "RTL_SDR"
 		}
 	}
 }
