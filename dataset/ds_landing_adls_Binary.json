@@ -11,7 +11,7 @@
 			"location": {
 				"type": "AzureBlobFSLocation",
 				"folderPath": "awss3",
-				"fileSystem": "landing_raw"
+				"fileSystem": "landingraw"
 			}
 		}
 	}
