@@ -29,11 +29,23 @@
 				"inputs": [
 					{
 						"referenceName": "ds_Restapi",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"relativeurl": {
+								"value": "@pipeline().parameters.relativeurl",
+								"type": "Expression"
+							}
+						}
 					}
 				]
 			}
 		],
+		"parameters": {
+			"relativeurl": {
+				"type": "string",
+				"defaultValue": "/speakers"
+			}
+		},
 		"annotations": []
 	}
 }
