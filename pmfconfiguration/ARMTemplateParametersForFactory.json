@@ -23,6 +23,9 @@
 		"LS_AzureKeyVault_properties_typeProperties_baseUrl": {
 			"value": "https://keyacc.vault.azure.net/"
 		},
+		"Ls_AzureBlobStorage_sasUri": {
+			"value": ""
+		},
 		"Ls_RestService_properties_typeProperties_url": {
 			"value": "https://bigconference.azurewebsites.net/"
 		},

@@ -32,6 +32,10 @@
 			"type": "string",
 			"defaultValue": "https://keyacc.vault.azure.net/"
 		},
+		"Ls_AzureBlobStorage_sasUri": {
+			"type": "secureString",
+			"metadata": "Secure string for 'sasUri' of 'Ls_AzureBlobStorage'"
+		},
 		"Ls_RestService_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://bigconference.azurewebsites.net/"
@@ -92,6 +96,9 @@
 					},
 					"LS_AzureKeyVault_properties_typeProperties_baseUrl": {
 						"value": "[parameters('LS_AzureKeyVault_properties_typeProperties_baseUrl')]"
+					},
+					"Ls_AzureBlobStorage_sasUri": {
+						"value": "[parameters('Ls_AzureBlobStorage_sasUri')]"
 					},
 					"Ls_RestService_properties_typeProperties_url": {
 						"value": "[parameters('Ls_RestService_properties_typeProperties_url')]"
