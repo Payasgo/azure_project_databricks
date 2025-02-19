@@ -5,9 +5,9 @@
 		"annotations": [],
 		"type": "FileServer",
 		"typeProperties": {
-			"host": "C:\\tempex\\",
+			"host": "C:\\tempex",
 			"userId": "RTL_SDR",
-			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI4MjZmYjg3Ni1hZWU3LTRhZTItOTE4MC1iMGYyZWE4NzdhNzMiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiIxNzQwOTM5ZC1kM2UyLTRhYzMtYmE2OS1hNTQ0YjI1MTM2NGEiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
 		},
 		"connectVia": {
 			"referenceName": "selfhostedintegrationRuntime",
