@@ -1,0 +1,37 @@
+{
+	"name": "pl_EmailFailureNotification",
+	"properties": {
+		"activities": [
+			{
+				"name": "sendEmailFailure",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "POST",
+					"url": {
+						"value": "@pipeline().parameters.appurl",
+						"type": "Expression"
+					},
+					"body": {
+						"value": "{\n    \"title\": \"pipelineName\",\n    \"message\": \"Failure\",\n    \"color\": \"Red\",\n    \"dataFactoryName\": \"@{pipeline().DataFactory}\",\n    \"pipelineName\": \"@{pipeline().pipeline}\",\n    \"pipelineRunId\": \"@{pipeline().RunId}\",\n    \"time\": \"@{utcNow()}\"\n}",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"appurl": {
+				"type": "string"
+			}
+		},
+		"annotations": []
+	}
+}
