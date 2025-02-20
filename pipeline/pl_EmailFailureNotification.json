@@ -29,7 +29,8 @@
 		],
 		"parameters": {
 			"appurl": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "https://prod-16.northcentralus.logic.azure.com:443/workflows/1a8f6cef03a2465f869674cb0d787b5c/triggers/When_a_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_a_HTTP_request_is_received%2Frun&sv=1.0&sig=22hwcNhaYEvDUVxVesT44lzrDqak0rgu0vYojbWMVmA"
 			}
 		},
 		"annotations": []
