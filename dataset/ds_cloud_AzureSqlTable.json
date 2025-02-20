@@ -1,17 +1,16 @@
 {
-	"name": "SourceDataset_fji",
+	"name": "ds_cloud_AzureSqlTable",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "Ls_AzureBlobStorage",
+			"referenceName": "ls_AzureSqlDatabase",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
-		"type": "Binary",
+		"type": "AzureSqlTable",
+		"schema": [],
 		"typeProperties": {
-			"location": {
-				"type": "AzureBlobStorageLocation",
-				"container": "databricks"
-			}
+			"schema": "dbo",
+			"table": "userdatapraquet"
 		}
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"

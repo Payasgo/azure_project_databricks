@@ -1,5 +1,6 @@
 {
 	"name": "LS_SqlServer",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
 		"parameters": {
 			"database": {

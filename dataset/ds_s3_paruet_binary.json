@@ -14,5 +14,6 @@
 				"fileName": "userdata.parquet"
 			}
 		}
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
 }

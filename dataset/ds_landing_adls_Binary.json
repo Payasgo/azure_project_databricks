@@ -14,5 +14,6 @@
 				"fileSystem": "landingraw"
 			}
 		}
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
 }
