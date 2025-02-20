@@ -1,9 +1,9 @@
 {
-	"name": "pl_EmailNotification",
+	"name": "pl_EmailSuccessNotification",
 	"properties": {
 		"activities": [
 			{
-				"name": "sendEmail",
+				"name": "sendEmailsuccess",
 				"type": "WebActivity",
 				"dependsOn": [],
 				"policy": {
