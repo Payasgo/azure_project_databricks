@@ -6,12 +6,46 @@
 			"type": "string",
 			"metadata": "Data Factory name",
 			"defaultValue": "pmfconfiguration"
+		},
+		"ls_FileServer_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'ls_FileServer'"
+		},
+		"ls_FileServer_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "C:\\tempex"
+		},
+		"ls_FileServer_properties_typeProperties_userId": {
+			"type": "string",
+			"defaultValue": "RTL_SDR"
 		}
 	},
 	"variables": {
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_FileServer')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "FileServer",
+				"typeProperties": {
+					"host": "[parameters('ls_FileServer_properties_typeProperties_host')]",
+					"userId": "[parameters('ls_FileServer_properties_typeProperties_userId')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('ls_FileServer_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "selfhostedintegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/CopyPipeline_fji')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
@@ -712,7 +746,9 @@
 					}
 				]
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_FileServer')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/ds_s3_SqlServerTable')]",

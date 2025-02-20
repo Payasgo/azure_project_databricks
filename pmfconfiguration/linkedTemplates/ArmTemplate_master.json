@@ -107,9 +107,6 @@
 					"LS_SqlServer_connectionString": {
 						"value": "[parameters('LS_SqlServer_connectionString')]"
 					},
-					"ls_FileServer_password": {
-						"value": "[parameters('ls_FileServer_password')]"
-					},
 					"LS_AzureDataLakeStorage_properties_typeProperties_url": {
 						"value": "[parameters('LS_AzureDataLakeStorage_properties_typeProperties_url')]"
 					},
@@ -133,12 +130,6 @@
 					},
 					"ls_AzureSqlDatabase_properties_typeProperties_userName": {
 						"value": "[parameters('ls_AzureSqlDatabase_properties_typeProperties_userName')]"
-					},
-					"ls_FileServer_properties_typeProperties_host": {
-						"value": "[parameters('ls_FileServer_properties_typeProperties_host')]"
-					},
-					"ls_FileServer_properties_typeProperties_userId": {
-						"value": "[parameters('ls_FileServer_properties_typeProperties_userId')]"
 					}
 				}
 			},
@@ -157,6 +148,15 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"ls_FileServer_password": {
+						"value": "[parameters('ls_FileServer_password')]"
+					},
+					"ls_FileServer_properties_typeProperties_host": {
+						"value": "[parameters('ls_FileServer_properties_typeProperties_host')]"
+					},
+					"ls_FileServer_properties_typeProperties_userId": {
+						"value": "[parameters('ls_FileServer_properties_typeProperties_userId')]"
 					}
 				}
 			},
