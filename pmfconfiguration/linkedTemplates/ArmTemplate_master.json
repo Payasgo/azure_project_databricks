@@ -20,6 +20,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'secretAccessKey' of 'ls_AmazonS31'"
 		},
+		"ls_AzureSqlDatabase_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'ls_AzureSqlDatabase'"
+		},
 		"ls_FileServer_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'ls_FileServer'"
@@ -43,6 +47,18 @@
 		"ls_AmazonS31_properties_typeProperties_accessKeyId": {
 			"type": "string",
 			"defaultValue": "AKIA4ZPZVBVPGOAHGWQV"
+		},
+		"ls_AzureSqlDatabase_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "sqlserverpipeline.database.windows.net"
+		},
+		"ls_AzureSqlDatabase_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "azuresqlpipeline"
+		},
+		"ls_AzureSqlDatabase_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "sqladmin"
 		},
 		"ls_FileServer_properties_typeProperties_host": {
 			"type": "string",
@@ -85,6 +101,9 @@
 					"ls_AmazonS31_secretAccessKey": {
 						"value": "[parameters('ls_AmazonS31_secretAccessKey')]"
 					},
+					"ls_AzureSqlDatabase_password": {
+						"value": "[parameters('ls_AzureSqlDatabase_password')]"
+					},
 					"LS_SqlServer_connectionString": {
 						"value": "[parameters('LS_SqlServer_connectionString')]"
 					},
@@ -105,6 +124,15 @@
 					},
 					"ls_AmazonS31_properties_typeProperties_accessKeyId": {
 						"value": "[parameters('ls_AmazonS31_properties_typeProperties_accessKeyId')]"
+					},
+					"ls_AzureSqlDatabase_properties_typeProperties_server": {
+						"value": "[parameters('ls_AzureSqlDatabase_properties_typeProperties_server')]"
+					},
+					"ls_AzureSqlDatabase_properties_typeProperties_database": {
+						"value": "[parameters('ls_AzureSqlDatabase_properties_typeProperties_database')]"
+					},
+					"ls_AzureSqlDatabase_properties_typeProperties_userName": {
+						"value": "[parameters('ls_AzureSqlDatabase_properties_typeProperties_userName')]"
 					},
 					"ls_FileServer_properties_typeProperties_host": {
 						"value": "[parameters('ls_FileServer_properties_typeProperties_host')]"

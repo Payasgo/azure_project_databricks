@@ -14,6 +14,9 @@
 		"ls_AmazonS31_secretAccessKey": {
 			"value": ""
 		},
+		"ls_AzureSqlDatabase_password": {
+			"value": ""
+		},
 		"ls_FileServer_password": {
 			"value": ""
 		},
@@ -31,6 +34,15 @@
 		},
 		"ls_AmazonS31_properties_typeProperties_accessKeyId": {
 			"value": "AKIA4ZPZVBVPGOAHGWQV"
+		},
+		"ls_AzureSqlDatabase_properties_typeProperties_server": {
+			"value": "sqlserverpipeline.database.windows.net"
+		},
+		"ls_AzureSqlDatabase_properties_typeProperties_database": {
+			"value": "azuresqlpipeline"
+		},
+		"ls_AzureSqlDatabase_properties_typeProperties_userName": {
+			"value": "sqladmin"
 		},
 		"ls_FileServer_properties_typeProperties_host": {
 			"value": "C:\\tempex"
