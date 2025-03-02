@@ -30,7 +30,14 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "set fileSystem",
+					"value": {
+						"value": "@activity('configFile lookup').output.firstRow.filesystem",
+						"type": "Expression"
+					}
+				}
 			},
 			{
 				"name": "set source path",
@@ -47,7 +54,14 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "set source path",
+					"value": {
+						"value": "@activity('configFile lookup').output.firstRow.source_path",
+						"type": "Expression"
+					}
+				}
 			},
 			{
 				"name": "set source file",
@@ -64,7 +78,14 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "set source file",
+					"value": {
+						"value": "@activity('configFile lookup').output.firstRow.source_file",
+						"type": "Expression"
+					}
+				}
 			},
 			{
 				"name": "set source sheet",
@@ -81,7 +102,14 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "set source sheet",
+					"value": {
+						"value": "@activity('configFile lookup').output.firstRow.source_sheet",
+						"type": "Expression"
+					}
+				}
 			},
 			{
 				"name": "set sink path",
@@ -98,7 +126,14 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "set sink path",
+					"value": {
+						"value": "@activity('configFile lookup').output.firstRow.sink_path",
+						"type": "Expression"
+					}
+				}
 			},
 			{
 				"name": "set sink file",
@@ -121,7 +156,14 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "set sink file",
+					"value": {
+						"value": "@activity('configFile lookup').output.firstRow.sinkfile",
+						"type": "Expression"
+					}
+				}
 			},
 			{
 				"name": "Copy Excel sheet to csv",
