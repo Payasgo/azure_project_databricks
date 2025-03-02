@@ -13,7 +13,27 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "ExcelSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						}
+					},
+					"dataset": {
+						"referenceName": "ds_souce_Excel",
+						"type": "DatasetReference",
+						"parameters": {
+							"sheetNames": {
+								"value": "@pipeline().parameters.source_sheet",
+								"type": "Expression"
+							}
+						}
+					}
+				}
 			},
 			{
 				"name": "set fileSystem",
