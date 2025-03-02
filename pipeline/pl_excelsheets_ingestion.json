@@ -1,0 +1,198 @@
+{
+	"name": "pl_excelsheets_ingestion",
+	"properties": {
+		"activities": [
+			{
+				"name": "configFile lookup",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": []
+			},
+			{
+				"name": "set fileSystem",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "configFile lookup",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": []
+			},
+			{
+				"name": "set source path",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "set fileSystem",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": []
+			},
+			{
+				"name": "set source file",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "set fileSystem",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": []
+			},
+			{
+				"name": "set source sheet",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "set fileSystem",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": []
+			},
+			{
+				"name": "set sink path",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "set source file",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": []
+			},
+			{
+				"name": "set sink file",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "set source sheet",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "set source path",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": []
+			},
+			{
+				"name": "Copy Excel sheet to csv",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "set sink path",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "set sink file",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"enableStaging": false
+				}
+			}
+		],
+		"parameters": {
+			"fileSystem": {
+				"type": "string"
+			},
+			"source_path": {
+				"type": "string"
+			},
+			"source_file": {
+				"type": "string"
+			},
+			"source_sheet": {
+				"type": "string"
+			},
+			"sink_path": {
+				"type": "string"
+			},
+			"sink_file": {
+				"type": "string"
+			}
+		},
+		"variables": {
+			"set fileSystem": {
+				"type": "String"
+			},
+			"set source path": {
+				"type": "String"
+			},
+			"set source file": {
+				"type": "String"
+			},
+			"set source sheet": {
+				"type": "String"
+			},
+			"set sink path": {
+				"type": "String"
+			},
+			"set sink file": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}
