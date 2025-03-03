@@ -177,7 +177,7 @@
 				"typeProperties": {
 					"variableName": "sinkFile",
 					"value": {
-						"value": "@activity('configFile lookup').output.firstRow.raw.sinkFile",
+						"value": "@activity('configFile lookup').output.firstRow.raw.sink_file_pattern",
 						"type": "Expression"
 					}
 				}
@@ -202,7 +202,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('configFile lookup').output.firstRow.raw.sink_path\n\n",
+						"value": "@activity('configFile lookup').output.firstRow.raw.source_sheets",
 						"type": "Expression"
 					},
 					"activities": [

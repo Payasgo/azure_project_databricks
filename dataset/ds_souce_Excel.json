@@ -31,10 +31,6 @@
 			},
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": {
-					"value": "@concat(item(), '.csv')\n",
-					"type": "Expression"
-				},
 				"fileSystem": "raw"
 			}
 		},
