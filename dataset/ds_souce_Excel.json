@@ -9,7 +9,7 @@
 			"sourceFile": {
 				"type": "string"
 			},
-			"sourcePath": {
+			"filePath": {
 				"type": "string"
 			},
 			"fileSystem": {
@@ -17,14 +17,24 @@
 			},
 			"sourceSheet": {
 				"type": "string"
+			},
+			"SheetName": {
+				"type": "string"
 			}
 		},
 		"annotations": [],
 		"type": "Excel",
 		"typeProperties": {
+			"sheetName": {
+				"value": "@dataset().SheetName",
+				"type": "Expression"
+			},
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "Bangalore-Realview_RVG_Bike_2024-2025_Southern.xlsx",
+				"fileName": {
+					"value": "concat(pipeline().parameters.source_path, pipeline().parameters.source_file)",
+					"type": "Expression"
+				},
 				"fileSystem": "raw"
 			}
 		},

@@ -246,8 +246,8 @@
 								"value": "@variables('sourceFile')",
 								"type": "Expression"
 							},
-							"sourcePath": {
-								"value": "@variables('sourcePath')",
+							"filePath": {
+								"value": "@concat(variables('sourcePath'),variables('latestFolder'))",
 								"type": "Expression"
 							},
 							"fileSystem": {
@@ -255,6 +255,10 @@
 								"type": "Expression"
 							},
 							"sourceSheet": {
+								"value": "@variables('sourceSheet')",
+								"type": "Expression"
+							},
+							"SheetName": {
 								"value": "@variables('sourceSheet')",
 								"type": "Expression"
 							}
