@@ -49,9 +49,9 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "latestFolder",
+					"variableName": "fileSystem",
 					"value": {
-						"value": "@activity('configFile lookup').output.firstRow.filesystem",
+						"value": "@activity('configFile lookup').output.firstRow.file_system",
 						"type": "Expression"
 					}
 				}
@@ -73,9 +73,9 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "prevFolder",
+					"variableName": "sourcePath",
 					"value": {
-						"value": "@activity('configFile lookup').output.firstRow.source_path",
+						"value": "@activity('configFile lookup').output.firstRow.raw.source_path",
 						"type": "Expression"
 					}
 				}
@@ -99,7 +99,7 @@
 				"typeProperties": {
 					"variableName": "sourcePath",
 					"value": {
-						"value": "@activity('configFile lookup').output.firstRow.source_file",
+						"value": "@activity('configFile lookup').output.firstRow.raw.source_file",
 						"type": "Expression"
 					}
 				}
@@ -121,9 +121,9 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "fileSystem",
+					"variableName": "sourceSheet",
 					"value": {
-						"value": "@activity('configFile lookup').output.firstRow.source_sheet",
+						"value": "@activity('configFile lookup').output.firstRow.raw.source_sheets",
 						"type": "Expression"
 					}
 				}
@@ -214,13 +214,16 @@
 		],
 		"parameters": {
 			"configFile": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "@pipeline().parameters.configFile"
 			},
 			"configPath": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "@pipeline().parameters.configFS"
 			},
 			"configFS": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "@pipeline().parameters.configPath"
 			}
 		},
 		"variables": {
@@ -243,7 +246,7 @@
 				"type": "String"
 			},
 			"sourceSheet": {
-				"type": "String"
+				"type": "Array"
 			},
 			"sinkFile": {
 				"type": "String"
