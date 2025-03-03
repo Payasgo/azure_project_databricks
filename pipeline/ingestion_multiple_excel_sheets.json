@@ -320,6 +320,9 @@
 			},
 			"sink_file_extension": {
 				"type": "String"
+			},
+			"file_system": {
+				"type": "String"
 			}
 		},
 		"annotations": []
