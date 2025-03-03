@@ -1,6 +1,168 @@
 {
 	"name": "ingestion_multiple_excel_sheets",
 	"properties": {
+		"activities": [
+			{
+				"name": "ConfigFile Lookup",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"dataset": {
+						"referenceName": "Ds_multiple_sheet_excelJson",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "set fileSystem",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "ConfigFile Lookup",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "source_path",
+					"value": {
+						"value": "@activity('ConfigFile Lookup').output.firstRow.raw.source_path",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "set sourcepath",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "set fileSystem",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "source_path",
+					"value": {
+						"value": "@activity('ConfigFile Lookup').output.firstRow.raw.source_path",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set sinkpath",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "set sourcepath",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "sink_path",
+					"value": {
+						"value": "@activity('ConfigFile Lookup').output.firstRow.raw.sink_path",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set sourcesheets",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "set fileSystem",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "source_sheets",
+					"value": {
+						"value": "@activity('ConfigFile Lookup').output.firstRow.raw.source_sheets",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"configFile": {
+				"type": "string",
+				"defaultValue": "@pipeline().parameters.configFile"
+			},
+			"configPath": {
+				"type": "string",
+				"defaultValue": "@pipeline().parameters.configPath"
+			},
+			"configFS": {
+				"type": "string",
+				"defaultValue": "@pipeline().parameters.configFS"
+			}
+		},
+		"variables": {
+			"source_path": {
+				"type": "String"
+			},
+			"source_file": {
+				"type": "String"
+			},
+			"source_sheets": {
+				"type": "Array"
+			},
+			"sink_path": {
+				"type": "String"
+			},
+			"sink_file_pattern": {
+				"type": "String"
+			},
+			"sink_file_extension": {
+				"type": "String"
+			}
+		},
 		"annotations": []
 	}
 }

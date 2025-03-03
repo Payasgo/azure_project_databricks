@@ -1,0 +1,52 @@
+{
+	"name": "Ds_multiple_sheet_excelJson",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureDataLakeStorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "config.json",
+				"fileSystem": "raw"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"file_system": {
+					"type": "string"
+				},
+				"raw": {
+					"type": "object",
+					"properties": {
+						"source_path": {
+							"type": "string"
+						},
+						"source_file": {
+							"type": "string"
+						},
+						"source_sheets": {
+							"type": "array",
+							"items": {
+								"type": "string"
+							}
+						},
+						"sink_path": {
+							"type": "string"
+						},
+						"sink_file_pattern": {
+							"type": "string"
+						},
+						"sink_file_extension": {
+							"type": "string"
+						}
+					}
+				}
+			}
+		}
+	}
+}
