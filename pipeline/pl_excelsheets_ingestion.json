@@ -177,114 +177,128 @@
 				"typeProperties": {
 					"variableName": "sinkPath",
 					"value": {
-						"value": "@activity('configFile lookup').output.firstRow.raw.sink_file_pattern",
+						"value": "array(activity('configFile lookup').output.firstRow.raw.sink_path)",
 						"type": "Expression"
 					}
 				}
 			},
 			{
-				"name": "Copy Excel sheet to csv",
-				"type": "Copy",
+				"name": "ForEach1",
+				"type": "ForEach",
 				"dependsOn": [
-					{
-						"activity": "set sink path",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
 					{
 						"activity": "set sink file",
 						"dependencyConditions": [
 							"Succeeded"
 						]
+					},
+					{
+						"activity": "set sink path",
+						"dependencyConditions": [
+							"Succeeded"
+						]
 					}
 				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
 				"userProperties": [],
 				"typeProperties": {
-					"source": {
-						"type": "ExcelSource",
-						"storeSettings": {
-							"type": "AzureBlobFSReadSettings",
-							"recursive": true,
-							"enablePartitionDiscovery": false
-						}
+					"items": {
+						"value": "@activity('configFile lookup').output.firstRow.raw.sink_path\n",
+						"type": "Expression"
 					},
-					"sink": {
-						"type": "DelimitedTextSink",
-						"storeSettings": {
-							"type": "AzureBlobFSWriteSettings"
-						},
-						"formatSettings": {
-							"type": "DelimitedTextWriteSettings",
-							"quoteAllText": true,
-							"fileExtension": ".txt"
+					"activities": [
+						{
+							"name": "Copy Excel sheet to csv",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "ExcelSource",
+									"storeSettings": {
+										"type": "AzureBlobFSReadSettings",
+										"recursive": true,
+										"enablePartitionDiscovery": false
+									}
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "ds_souce_Excel",
+									"type": "DatasetReference",
+									"parameters": {
+										"sourceFile": {
+											"value": "@variables('sourceFile')",
+											"type": "Expression"
+										},
+										"filePath": {
+											"value": "@concat(variables('sourcePath'),variables('latestFolder'))",
+											"type": "Expression"
+										},
+										"fileSystem": {
+											"value": "@variables('fileSystem')",
+											"type": "Expression"
+										},
+										"sourceSheet": {
+											"value": "@variables('sourceSheet')",
+											"type": "Expression"
+										},
+										"SheetName": {
+											"value": "@variables('sourceSheet')",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "ds_target_csv",
+									"type": "DatasetReference",
+									"parameters": {
+										"sinkFile": {
+											"value": "@variables('sinkFile')",
+											"type": "Expression"
+										},
+										"sinkPath": {
+											"value": "@variables('sinkPath')",
+											"type": "Expression"
+										},
+										"fileSystem": {
+											"value": "@variables('fileSystem')",
+											"type": "Expression"
+										}
+									}
+								}
+							]
 						}
-					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"typeConversion": true,
-						"typeConversionSettings": {
-							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
-						}
-					}
-				},
-				"inputs": [
-					{
-						"referenceName": "ds_souce_Excel",
-						"type": "DatasetReference",
-						"parameters": {
-							"sourceFile": {
-								"value": "@variables('sourceFile')",
-								"type": "Expression"
-							},
-							"filePath": {
-								"value": "@concat(variables('sourcePath'),variables('latestFolder'))",
-								"type": "Expression"
-							},
-							"fileSystem": {
-								"value": "@variables('fileSystem')",
-								"type": "Expression"
-							},
-							"sourceSheet": {
-								"value": "@variables('sourceSheet')",
-								"type": "Expression"
-							},
-							"SheetName": {
-								"value": "@variables('sourceSheet')",
-								"type": "Expression"
-							}
-						}
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "ds_target_csv",
-						"type": "DatasetReference",
-						"parameters": {
-							"sinkFile": {
-								"value": "@variables('sinkFile')",
-								"type": "Expression"
-							},
-							"sinkPath": {
-								"value": "@variables('sinkPath')",
-								"type": "Expression"
-							},
-							"fileSystem": {
-								"value": "@variables('fileSystem')",
-								"type": "Expression"
-							}
-						}
-					}
-				]
+					]
+				}
 			}
 		],
 		"parameters": {
@@ -318,13 +332,13 @@
 				"type": "String"
 			},
 			"sinkPath": {
-				"type": "String"
+				"type": "Array"
 			},
 			"sourceSheet": {
 				"type": "Array"
 			},
 			"sinkFile": {
-				"type": "String"
+				"type": "Array"
 			}
 		},
 		"annotations": []

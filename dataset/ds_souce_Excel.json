@@ -32,7 +32,7 @@
 			"location": {
 				"type": "AzureBlobFSLocation",
 				"fileName": {
-					"value": "concat(pipeline().parameters.source_path, pipeline().parameters.source_file)",
+					"value": "@concat(item(), '.csv')\n",
 					"type": "Expression"
 				},
 				"fileSystem": "raw"
