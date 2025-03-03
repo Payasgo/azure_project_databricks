@@ -2188,6 +2188,482 @@
 				"typeProperties": {}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ingestion_multiple_excel_sheets')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "ConfigFile Lookup",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
+								}
+							},
+							"dataset": {
+								"referenceName": "Ds_multiple_sheet_excelJson",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "set fileSystem",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "ConfigFile Lookup",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "source_path",
+							"value": {
+								"value": "@activity('ConfigFile Lookup').output.firstRow.raw.source_path",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "set sourcepath",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "set fileSystem",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "source_path",
+							"value": {
+								"value": "@activity('ConfigFile Lookup').output.firstRow.raw.source_path",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set sinkpath",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "set sourcepath",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "sink_path",
+							"value": {
+								"value": "@activity('ConfigFile Lookup').output.firstRow.raw.sink_path",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set sourcesheets",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "set fileSystem",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "source_sheets",
+							"value": {
+								"value": "@activity('ConfigFile Lookup').output.firstRow.raw.source_sheets",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "excel sheet to csv",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Set sinkpath",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Set sourcesheets",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@createArray(activity('ConfigFile Lookup').output.firstRow.file_system)",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Set sinkfile",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"policy": {
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "sink_file_pattern",
+										"value": {
+											"value": "concat(variables('sink_file_pattern'), '.', variables('sink_file_extension'))",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Set source_sheets",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"policy": {
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "source_sheets",
+										"value": {
+											"value": "@item()",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Copy and merge excel to csv",
+									"type": "Copy",
+									"dependsOn": [
+										{
+											"activity": "Set sinkfile",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										},
+										{
+											"activity": "Set source_sheets",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "ExcelSource",
+											"storeSettings": {
+												"type": "AzureBlobFSReadSettings",
+												"recursive": true,
+												"wildcardFolderPath": "@concat(variables('source_path'), '/*.xlsx')",
+												"wildcardFileName": "*.xlsx",
+												"enablePartitionDiscovery": false
+											}
+										},
+										"sink": {
+											"type": "DelimitedTextSink",
+											"storeSettings": {
+												"type": "AzureBlobFSWriteSettings"
+											},
+											"formatSettings": {
+												"type": "DelimitedTextWriteSettings",
+												"quoteAllText": true,
+												"fileExtension": ".txt"
+											}
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "ds_excel_source_all_Excel",
+											"type": "DatasetReference",
+											"parameters": {
+												"fileSystem": {
+													"value": "@variables('source_path')",
+													"type": "Expression"
+												},
+												"SourcePath": {
+													"value": "@concat(variables('source_path'), '/', item())",
+													"type": "Expression"
+												},
+												"SheetName": {
+													"value": "@item()",
+													"type": "Expression"
+												}
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "ds_excel_csv_all_DelimitedText",
+											"type": "DatasetReference",
+											"parameters": {
+												"sinkPath": {
+													"value": "@variables('sink_path')",
+													"type": "Expression"
+												},
+												"fileName": {
+													"value": "@variables('sink_file_pattern')",
+													"type": "Expression"
+												},
+												"fileSystem": {
+													"value": "@variables('sink_path')",
+													"type": "Expression"
+												}
+											}
+										}
+									]
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"configFile": {
+						"type": "string",
+						"defaultValue": "@pipeline().parameters.configFile"
+					},
+					"configPath": {
+						"type": "string",
+						"defaultValue": "@pipeline().parameters.configPath"
+					},
+					"configFS": {
+						"type": "string",
+						"defaultValue": "@pipeline().parameters.configFS"
+					}
+				},
+				"variables": {
+					"source_path": {
+						"type": "String"
+					},
+					"source_file": {
+						"type": "String"
+					},
+					"source_sheets": {
+						"type": "Array"
+					},
+					"sink_path": {
+						"type": "String"
+					},
+					"sink_file_pattern": {
+						"type": "String"
+					},
+					"sink_file_extension": {
+						"type": "String"
+					},
+					"file_system": {
+						"type": "String"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Ds_multiple_sheet_excelJson')]",
+				"[concat(variables('factoryId'), '/datasets/ds_excel_source_all_Excel')]",
+				"[concat(variables('factoryId'), '/datasets/ds_excel_csv_all_DelimitedText')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Ds_multiple_sheet_excelJson')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureDataLakeStorage",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "config.json",
+						"fileSystem": "raw"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"file_system": {
+							"type": "string"
+						},
+						"raw": {
+							"type": "object",
+							"properties": {
+								"source_path": {
+									"type": "string"
+								},
+								"source_file": {
+									"type": "string"
+								},
+								"source_sheets": {
+									"type": "array",
+									"items": {
+										"type": "string"
+									}
+								},
+								"sink_path": {
+									"type": "string"
+								},
+								"sink_file_pattern": {
+									"type": "string"
+								},
+								"sink_file_extension": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_AzureDataLakeStorage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_excel_source_all_Excel')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureDataLakeStorage",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"fileSystem": {
+						"type": "string"
+					},
+					"SourcePath": {
+						"type": "string"
+					},
+					"SheetName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Excel",
+				"typeProperties": {
+					"sheetName": {
+						"value": "@dataset().SourcePath",
+						"type": "Expression"
+					},
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "Bangalore-Realview_RVG_Bike_2024-2025_Southern.xlsx",
+						"fileSystem": "raw"
+					},
+					"firstRowAsHeader": true
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_AzureDataLakeStorage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_excel_csv_all_DelimitedText')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureDataLakeStorage",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"sinkPath": {
+						"type": "string"
+					},
+					"fileName": {
+						"type": "string"
+					},
+					"fileSystem": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "presented"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_AzureDataLakeStorage')]"
+			]
 		}
 	]
 }
