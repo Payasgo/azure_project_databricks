@@ -264,7 +264,21 @@
 				"outputs": [
 					{
 						"referenceName": "ds_target_csv",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"sinkFile": {
+								"value": "@variables('sinkFile')",
+								"type": "Expression"
+							},
+							"sinkPath": {
+								"value": "@variables('sinkPath')",
+								"type": "Expression"
+							},
+							"fileSystem": {
+								"value": "@variables('fileSystem')",
+								"type": "Expression"
+							}
+						}
 					}
 				]
 			}

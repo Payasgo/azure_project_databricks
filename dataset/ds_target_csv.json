@@ -5,6 +5,17 @@
 			"referenceName": "LS_AzureDataLakeStorage",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"sinkFile": {
+				"type": "string"
+			},
+			"sinkPath": {
+				"type": "string"
+			},
+			"fileSystem": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
