@@ -16,22 +16,19 @@
 				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "ExcelSource",
+						"type": "JsonSource",
 						"storeSettings": {
 							"type": "AzureBlobFSReadSettings",
 							"recursive": true,
 							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
 						}
 					},
 					"dataset": {
-						"referenceName": "ds_souce_Excel",
-						"type": "DatasetReference",
-						"parameters": {
-							"sheetNames": {
-								"value": "@pipeline().parameters.source_sheet",
-								"type": "Expression"
-							}
-						}
+						"referenceName": "ds_datalake_Json",
+						"type": "DatasetReference"
 					}
 				}
 			},
