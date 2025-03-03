@@ -216,22 +216,13 @@
 			}
 		],
 		"parameters": {
-			"fileSystem": {
+			"configFile": {
 				"type": "string"
 			},
-			"source_path": {
+			"configPath": {
 				"type": "string"
 			},
-			"source_file": {
-				"type": "string"
-			},
-			"source_sheet": {
-				"type": "string"
-			},
-			"sink_path": {
-				"type": "string"
-			},
-			"sink_file": {
+			"configFS": {
 				"type": "string"
 			}
 		},
