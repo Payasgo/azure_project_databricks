@@ -175,9 +175,9 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "sinkPath",
+					"variableName": "sinkFile",
 					"value": {
-						"value": "@activity('configFile lookup').output.firstRow.raw.sink_path",
+						"value": "@activity('configFile lookup').output.firstRow.raw.sinkFile",
 						"type": "Expression"
 					}
 				}
@@ -338,7 +338,7 @@
 				"type": "Array"
 			},
 			"sinkFile": {
-				"type": "Array"
+				"type": "String"
 			}
 		},
 		"annotations": []
