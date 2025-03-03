@@ -236,7 +236,7 @@
 									"formatSettings": {
 										"type": "DelimitedTextWriteSettings",
 										"quoteAllText": true,
-										"fileExtension": ".txt"
+										"fileExtension": ".csv"
 									}
 								},
 								"enableStaging": false,
@@ -271,7 +271,7 @@
 											"type": "Expression"
 										},
 										"SheetName": {
-											"value": "@item().sheetName",
+											"value": "@item()",
 											"type": "Expression"
 										}
 									}
@@ -283,7 +283,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"sinkFile": {
-											"value": "@variables('sinkFile')",
+											"value": "@concat('Bangalore-Realview_RVG_Bike_2024-2025_Southern_', utcNow(), '.csv')",
 											"type": "Expression"
 										},
 										"sinkPath": {
