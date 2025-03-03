@@ -6,13 +6,13 @@
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"sheetName": {
+			"fileSystem": {
 				"type": "string"
 			},
-			"fileSystem": {
-				"type": "array"
+			"SourcePath": {
+				"type": "string"
 			},
-			"sourcePath": {
+			"SheetName": {
 				"type": "string"
 			}
 		},
@@ -20,11 +20,12 @@
 		"type": "Excel",
 		"typeProperties": {
 			"sheetName": {
-				"value": "@dataset('sheetName')",
+				"value": "@dataset().SourcePath",
 				"type": "Expression"
 			},
 			"location": {
 				"type": "AzureBlobFSLocation",
+				"fileName": "Bangalore-Realview_RVG_Bike_2024-2025_Southern.xlsx",
 				"fileSystem": "raw"
 			},
 			"firstRowAsHeader": true
