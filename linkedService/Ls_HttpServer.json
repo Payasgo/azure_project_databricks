@@ -1,0 +1,12 @@
+{
+	"name": "Ls_HttpServer",
+	"properties": {
+		"annotations": [],
+		"type": "HttpServer",
+		"typeProperties": {
+			"url": "https://support.staffbase.com/hc/en-us/articles/360007108391-CSV-File-Examples#csv-example-username",
+			"enableServerCertificateValidation": true,
+			"authenticationType": "Anonymous"
+		}
+	}
+}
