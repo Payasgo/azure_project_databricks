@@ -127,6 +127,168 @@
 						"type": "Expression"
 					}
 				}
+			},
+			{
+				"name": "excel sheet to csv",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Set sinkpath",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Set sourcesheets",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@json(activity('ConfigFile Lookup').output.firstRow.file_system)\n",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Set sinkfile",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "sink_file_pattern",
+								"value": {
+									"value": "@item().sink_file",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Set source_sheets",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "source_sheets",
+								"value": {
+									"value": "@item()",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Copy and merge excel to csv",
+							"type": "Copy",
+							"dependsOn": [
+								{
+									"activity": "Set sinkfile",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								},
+								{
+									"activity": "Set source_sheets",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "ExcelSource",
+									"storeSettings": {
+										"type": "AzureBlobFSReadSettings",
+										"recursive": true,
+										"wildcardFolderPath": {
+											"value": "@variables('source_path')",
+											"type": "Expression"
+										},
+										"wildcardFileName": "*.xlsx",
+										"enablePartitionDiscovery": false
+									}
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "ds_excel_source_all_Excel",
+									"type": "DatasetReference",
+									"parameters": {
+										"sheetName": {
+											"value": "@item()",
+											"type": "Expression"
+										},
+										"fileSystem": {
+											"value": "@variables('source_path')",
+											"type": "Expression"
+										},
+										"sourcePath": {
+											"value": "@concat(variables('source_path'), '/', variables('source_file'))",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "ds_excel_csv_all_DelimitedText",
+									"type": "DatasetReference",
+									"parameters": {
+										"sinkPath": {
+											"value": "@variables('sink_path')",
+											"type": "Expression"
+										},
+										"fileName": {
+											"value": "@concat(item(), '.csv')",
+											"type": "Expression"
+										},
+										"fileSystem": {
+											"value": "@variables('sink_path')",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					]
+				}
 			}
 		],
 		"parameters": {
