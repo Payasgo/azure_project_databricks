@@ -52,7 +52,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "set fileSystem",
+					"variableName": "latestFolder",
 					"value": {
 						"value": "@activity('configFile lookup').output.firstRow.filesystem",
 						"type": "Expression"
@@ -76,7 +76,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "set source path",
+					"variableName": "prevFolder",
 					"value": {
 						"value": "@activity('configFile lookup').output.firstRow.source_path",
 						"type": "Expression"
@@ -100,7 +100,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "set source file",
+					"variableName": "sourcePath",
 					"value": {
 						"value": "@activity('configFile lookup').output.firstRow.source_file",
 						"type": "Expression"
@@ -124,7 +124,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "set source sheet",
+					"variableName": "fileSystem",
 					"value": {
 						"value": "@activity('configFile lookup').output.firstRow.source_sheet",
 						"type": "Expression"
@@ -148,7 +148,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "set sink path",
+					"variableName": "sourceFile",
 					"value": {
 						"value": "@activity('configFile lookup').output.firstRow.sink_path",
 						"type": "Expression"
@@ -178,7 +178,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "set sink file",
+					"variableName": "sinkPath",
 					"value": {
 						"value": "@activity('configFile lookup').output.firstRow.sinkfile",
 						"type": "Expression"
@@ -227,22 +227,28 @@
 			}
 		},
 		"variables": {
-			"set fileSystem": {
+			"latestFolder": {
 				"type": "String"
 			},
-			"set source path": {
+			"prevFolder": {
 				"type": "String"
 			},
-			"set source file": {
+			"sourcePath": {
 				"type": "String"
 			},
-			"set source sheet": {
+			"fileSystem": {
 				"type": "String"
 			},
-			"set sink path": {
+			"sourceFile": {
 				"type": "String"
 			},
-			"set sink file": {
+			"sinkPath": {
+				"type": "String"
+			},
+			"sourceSheet": {
+				"type": "String"
+			},
+			"sinkFile": {
 				"type": "String"
 			}
 		},
