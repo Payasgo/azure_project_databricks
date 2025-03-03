@@ -208,8 +208,65 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"enableStaging": false
-				}
+					"source": {
+						"type": "ExcelSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						}
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_souce_Excel",
+						"type": "DatasetReference",
+						"parameters": {
+							"sourceFile": {
+								"value": "@variables('sourceFile')",
+								"type": "Expression"
+							},
+							"sourcePath": {
+								"value": "@variables('sourcePath')",
+								"type": "Expression"
+							},
+							"fileSystem": {
+								"value": "@variables('fileSystem')",
+								"type": "Expression"
+							},
+							"sourceSheet": {
+								"value": "@variables('sourceSheet')",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_target_csv",
+						"type": "DatasetReference"
+					}
+				]
 			}
 		],
 		"parameters": {
