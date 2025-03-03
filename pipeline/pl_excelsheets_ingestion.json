@@ -259,7 +259,7 @@
 											"type": "Expression"
 										},
 										"filePath": {
-											"value": "@concat(variables('sourcePath'),variables('latestFolder'))",
+											"value": "@concat(variables('sourcePath'), '/', variables('latestFolder'))",
 											"type": "Expression"
 										},
 										"fileSystem": {
@@ -287,7 +287,7 @@
 											"type": "Expression"
 										},
 										"sinkPath": {
-											"value": "concat(variables('sinkPath')[iterationIndexes('ForEach1')], '/', item(), '.csv')",
+											"value": "@concat(variables('sinkPath'), '/', item(), '.csv')",
 											"type": "Expression"
 										},
 										"fileSystem": {
