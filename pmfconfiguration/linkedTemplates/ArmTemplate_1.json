@@ -7,6 +7,11 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "pmfconfiguration"
 		},
+		"LS_SqlServer_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'LS_SqlServer'",
+			"defaultValue": "Integrated Security=False;Data Source=RTL-SDR;Initial Catalog=@{linkedService().database};User ID=kranthi"
+		},
 		"ls_FileServer_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'ls_FileServer'"
@@ -24,6 +29,114 @@
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_souce_Excel')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureDataLakeStorage",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"sourceFile": {
+						"type": "string"
+					},
+					"filePath": {
+						"type": "string"
+					},
+					"fileSystem": {
+						"type": "string"
+					},
+					"sourceSheet": {
+						"type": "string"
+					},
+					"SheetName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Excel",
+				"typeProperties": {
+					"sheetName": {
+						"value": "@dataset().SheetName",
+						"type": "Expression"
+					},
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "raw"
+					}
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_target_csv')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureDataLakeStorage",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"sinkFile": {
+						"type": "string"
+					},
+					"sinkPath": {
+						"type": "string"
+					},
+					"fileSystem": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "dwtemp"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_SqlServer')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"parameters": {
+					"database": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"connectionString": "[parameters('LS_SqlServer_connectionString')]",
+					"password": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "LS_AzureKeyVault",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "password"
+					}
+				},
+				"connectVia": {
+					"referenceName": "selfhostedintegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/ls_FileServer')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
@@ -426,6 +539,363 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/pl_excelsheets_ingestion')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "configFile lookup",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
+								}
+							},
+							"dataset": {
+								"referenceName": "ds_datalake_Json",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "set fileSystem",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "configFile lookup",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "fileSystem",
+							"value": {
+								"value": "@activity('configFile lookup').output.firstRow.file_system",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "set source path",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "set fileSystem",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "sourcePath",
+							"value": {
+								"value": "@activity('configFile lookup').output.firstRow.raw.source_path",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "set source file",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "set fileSystem",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "sourcePath",
+							"value": {
+								"value": "@activity('configFile lookup').output.firstRow.raw.source_file",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "set source sheet",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "set fileSystem",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "sourceSheet",
+							"value": {
+								"value": "@activity('configFile lookup').output.firstRow.raw.source_sheets",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "set sink path",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "set source file",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "sourceFile",
+							"value": {
+								"value": "@activity('configFile lookup').output.firstRow.raw.sink_path",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "set sink file",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "set source sheet",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "set source path",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "sinkFile",
+							"value": {
+								"value": "@activity('configFile lookup').output.firstRow.raw.sink_file_pattern",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "ForEach1",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "set sink file",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "set sink path",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('configFile lookup').output.firstRow.raw.source_sheets",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Copy Excel sheet to csv",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "ExcelSource",
+											"storeSettings": {
+												"type": "AzureBlobFSReadSettings",
+												"recursive": true,
+												"wildcardFileName": "*.xlsx",
+												"enablePartitionDiscovery": false
+											}
+										},
+										"sink": {
+											"type": "DelimitedTextSink",
+											"storeSettings": {
+												"type": "AzureBlobFSWriteSettings"
+											},
+											"formatSettings": {
+												"type": "DelimitedTextWriteSettings",
+												"quoteAllText": true,
+												"fileExtension": ".csv"
+											}
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "ds_souce_Excel",
+											"type": "DatasetReference",
+											"parameters": {
+												"sourceFile": {
+													"value": "@variables('sourceFile')",
+													"type": "Expression"
+												},
+												"filePath": {
+													"value": "@concat(variables('sourcePath'),variables('latestFolder'))",
+													"type": "Expression"
+												},
+												"fileSystem": {
+													"value": "@variables('fileSystem')",
+													"type": "Expression"
+												},
+												"sourceSheet": {
+													"value": "@variables('sourceSheet')",
+													"type": "Expression"
+												},
+												"SheetName": {
+													"value": "@item()",
+													"type": "Expression"
+												}
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "ds_target_csv",
+											"type": "DatasetReference",
+											"parameters": {
+												"sinkFile": {
+													"value": "@concat('Bangalore-Realview_RVG_Bike_2024-2025_Southern_', utcNow(), '.csv')",
+													"type": "Expression"
+												},
+												"sinkPath": {
+													"value": "concat(variables('sinkPath')[iterationIndexes('ForEach1')], '/', item(), '.csv')",
+													"type": "Expression"
+												},
+												"fileSystem": {
+													"value": "@variables('fileSystem')",
+													"type": "Expression"
+												}
+											}
+										}
+									]
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"configFile": {
+						"type": "string",
+						"defaultValue": "@pipeline().parameters.configFile"
+					},
+					"configPath": {
+						"type": "string",
+						"defaultValue": "@pipeline().parameters.configFS"
+					},
+					"configFS": {
+						"type": "string",
+						"defaultValue": "@pipeline().parameters.configPath"
+					}
+				},
+				"variables": {
+					"latestFolder": {
+						"type": "String"
+					},
+					"prevFolder": {
+						"type": "String"
+					},
+					"sourcePath": {
+						"type": "String"
+					},
+					"fileSystem": {
+						"type": "String"
+					},
+					"sourceFile": {
+						"type": "String"
+					},
+					"sinkPath": {
+						"type": "Array"
+					},
+					"sourceSheet": {
+						"type": "Array"
+					},
+					"sinkFile": {
+						"type": "String"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_souce_Excel')]",
+				"[concat(variables('factoryId'), '/datasets/ds_target_csv')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/pl_filemetadata')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -524,7 +994,9 @@
 				"annotations": [],
 				"lastPublishTime": "2025-02-19T15:58:47Z"
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_SqlServer')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/pl_filemetadata_copy')]",
@@ -625,7 +1097,9 @@
 				"annotations": [],
 				"lastPublishTime": "2025-02-19T23:48:41Z"
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_SqlServer')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/pl_restapi')]",
@@ -770,7 +1244,9 @@
 					"table": "userparquet"
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_SqlServer')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/pl_awss3_adls_sqlserver_copy')]",
@@ -1040,84 +1516,8 @@
 				"lastPublishTime": "2025-02-19T15:58:48Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ds_s3_SqlServerTable')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pl_filesystem_adls')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Copy_data_Local",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "FileServerReadSettings",
-									"recursive": true,
-									"enablePartitionDiscovery": false
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".csv"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "ds_azurefile",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "ds_target_csv",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"annotations": [],
-				"lastPublishTime": "2025-02-19T15:58:47Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ds_azurefile')]"
+				"[concat(variables('factoryId'), '/datasets/ds_s3_SqlServerTable')]",
+				"[concat(variables('factoryId'), '/linkedServices/LS_SqlServer')]"
 			]
 		},
 		{

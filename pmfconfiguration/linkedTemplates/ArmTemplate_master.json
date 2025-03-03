@@ -104,9 +104,6 @@
 					"ls_AzureSqlDatabase_password": {
 						"value": "[parameters('ls_AzureSqlDatabase_password')]"
 					},
-					"LS_SqlServer_connectionString": {
-						"value": "[parameters('LS_SqlServer_connectionString')]"
-					},
 					"LS_AzureDataLakeStorage_properties_typeProperties_url": {
 						"value": "[parameters('LS_AzureDataLakeStorage_properties_typeProperties_url')]"
 					},
@@ -148,6 +145,9 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"LS_SqlServer_connectionString": {
+						"value": "[parameters('LS_SqlServer_connectionString')]"
 					},
 					"ls_FileServer_password": {
 						"value": "[parameters('ls_FileServer_password')]"
