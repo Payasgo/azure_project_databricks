@@ -1,0 +1,9 @@
+{
+	"name": "azupipelineconfig",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "cf8b3d06-ae2b-41ac-8da1-978dce8d3e93",
+		"tenantId": "abc7b3b4-0474-4c36-8f68-7f18035fed58"
+	}
+}
